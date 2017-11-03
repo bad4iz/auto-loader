@@ -1,0 +1,40 @@
+{% extends "components/layout.twig" %}
+
+
+
+
+{% block title %}Админка{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+  <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+  <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+{% endblock %}
+
+
+
+{% block content %}
+  <div id="app">
+    <app></app>
+  </div>
+{% block header %}
+    {{ parent() }}
+{% endblock %}
+<div id="app">
+
+
+</div>
+{% endblock %}
+
+{% block script %}
+    {{ parent() }}
+
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
+  <script>
+      new Vue({ el: '#app' })
+  </script>
+
+{% endblock %}
+
