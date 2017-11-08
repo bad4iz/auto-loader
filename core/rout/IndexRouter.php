@@ -14,9 +14,8 @@ class IndexRouter extends Router {
   function registerRouter() {
 
     $this->app->get('/', function ($request, $response, $args) {
-      return $this->view->render($response, 'pages/index.twig', [
-        'name' => 'name'
-      ]);
+      $response->getBody()->write('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
+      return $response;
     });
 
   }

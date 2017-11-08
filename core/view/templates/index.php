@@ -1,7 +1,7 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: bad4iz
- * Date: 08.11.17
- * Time: 11:10
- */
+//include_once
+
+echo dirname(__DIR__);
+echo '2222222222222222';
+?>
+sdfsfasdfs
