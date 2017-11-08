@@ -11,4 +11,10 @@ namespace Core\model;
 
 class RenderModel {
 
+  public function render($file) {
+    ob_start();
+    include( $_SERVER['DOCUMENT_ROOT'] . '/' . $file );
+    return ob_get_clean();
+  }
+
 }
