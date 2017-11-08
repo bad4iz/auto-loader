@@ -17,4 +17,8 @@ class RenderModel {
     return ob_get_clean();
   }
 
+  function readFile($file){
+    return file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/' . $file ,  FILE_USE_INCLUDE_PATH);
+  }
+
 }

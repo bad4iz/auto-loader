@@ -4,3 +4,5 @@ vendor
 composer.lock
 error.log
 .env
+link/client/node_modules
+node_modules

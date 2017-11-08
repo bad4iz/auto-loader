@@ -11,7 +11,7 @@ namespace Core\model;
 
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/core/lib/notorm-master/NotORM.php");
 
-class NoLogisticModel {
+class LogisticModel {
   private $pdo;
   static private $_instance;
 

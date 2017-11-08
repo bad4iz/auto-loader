@@ -9,14 +9,18 @@
 namespace Core\rout;
 
 
+use Core\model\RenderModel;
+
 class IndexRouter extends Router {
 
   function registerRouter() {
 
     $this->app->get('/', function ($request, $response, $args) {
-      $response->getBody()->write('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
+      $renderModel = new RenderModel();
+      $response->getBody()->write( $renderModel->render('link/client/dist/index.html') );
       return $response;
     });
 
   }
 }
+

@@ -6,6 +6,8 @@ use Slim\App;
 
 include_once "vendor/autoload.php";
 
+$_ENV['env'] = parse_ini_file($_SERVER['DOCUMENT_ROOT'] . '/.env');
+
 // Create and configure Slim app
 $config = ['settings' => [
   'displayErrorDetails' => true,
