@@ -15,7 +15,7 @@
         <v-list>
           <v-list-tile v-for="item in drawerMenu" v-bind:key="item.title">
             <v-list-tile-avatar>
-              <v-icon v-if="item.icon" >{{item.icon}}</v-icon>
+              <v-icon >{{item.icon}}</v-icon>
             </v-list-tile-avatar>
             <v-list-tile-content>
               <router-link :to="item.href">{{item.title}}</router-link>
@@ -62,13 +62,14 @@
         <v-btn icon>
         <v-icon>apps</v-icon>
       </v-btn>
-      <v-btn icon>
-          <v-badge color="red">
-          <span slot="badge">6</span>
-          <v-icon>notifications</v-icon>
-        </v-badge>
-     
-      </v-btn>
+      <router-link to="/noLogistic">
+        <v-btn icon>
+            <v-badge color="red">
+            <span slot="badge">{{this.$store.getters.noLogisticsCount}}</span>
+            <v-icon>notifications</v-icon>
+          </v-badge>
+        </v-btn>
+      </router-link>
       <v-btn icon large>
        <v-avatar size="40px" tile>
           <img
@@ -105,6 +106,16 @@ export default {
         href: '/'
       },
       {
+        icon: 'tab_unselected',
+        title: 'No Logistic',
+        href: '/noLogistic'
+      },
+      {
+        icon: 'tab',
+        title: 'Logistic',
+        href: '/logistic'
+      },
+      {
         icon: 'build',
         title: 'Админка',
         href: '/admin'
@@ -113,6 +124,9 @@ export default {
   }),
   props: {
     source: String
+  },
+  created: function () {
+    this.$store.dispatch('noLogisticsInit')
   }
 }
 </script>

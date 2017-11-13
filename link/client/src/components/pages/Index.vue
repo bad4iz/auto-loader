@@ -1,20 +1,12 @@
 <template>
 <div>
-
     <h1>index</h1>
-  
-    <no-logistics-table></no-logistics-table>
 </div>
 </template>
 
-
-
 <script>
-  import noLogisticsTable from './../components/noLogisticTable.vue'
   export default {
-    components: {
-      noLogisticsTable
-    }
+  
   }
 </script>
 

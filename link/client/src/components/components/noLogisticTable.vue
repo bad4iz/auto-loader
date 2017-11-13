@@ -13,27 +13,14 @@
     </v-card-title>
     <v-data-table
         v-bind:headers="headers"
-        v-bind:items="item"
+        v-bind:items="this.$store.getters.noLogistics"
         v-bind:search="search"
       >
-      <template slot="items" scope="props">
-        <td>
-          <v-edit-dialog
-            lazy
-          > {{ props.item.id }}
-            <v-text-field
-              slot="input"
-              label="Edit"
-              single-line
-              counter
-              :rules="[max25chars]"
-            ></v-text-field>
-          </v-edit-dialog>
-        </td>
+      <template slot="items" slot-scope="props">
         <td class="text-xs-right">{{ props.item.keyFile }}</td>
-        <td class="text-xs-right">{{ props.item.time }}</td>
+        <td class="text-xs">{{ props.item.time }}</td>
       </template>
-      <template slot="pageText" scope="{ pageStart, pageStop }">
+      <template slot="pageText" slot-scope="{ pageStart, pageStop }">
         From {{ pageStart }} to {{ pageStop }}
       </template>
     </v-data-table>
@@ -43,39 +30,22 @@
 
 
 <script>
-  import timeConverter from '../../libs/timeConverter'
+  // import timeConverter from '../../libs/timeConverter'
   export default {
     data () {
       return {
-        max25chars: (v) => v.length <= 25 || 'Input too long!',
         tmp: '',
         search: '',
         pagination: {},
         headers: [
-          {
-            text: '№',
-            align: 'right',
-            value: 'id'
-          },
           { text: 'Ключ', value: 'keyFile' },
-          { text: 'Дата', value: 'date' }
+          { text: 'Дата', align: 'center', value: 'date' }
         ],
         item: []
       }
     },
     created: function () {
-      let item = this.item
-      const url = 'http://auto-loader.dev/load/getNoLogistic'
-      fetch(url)
-        .then(function (response) {
-          return response.json()
-        })
-        .then(function (response) {
-          response.forEach((element) => {
-            const el = Object.assign(element, {time: timeConverter(element.date)})
-            item.push(el)
-          })
-        })
+      this.$store.dispatch('noLogisticsInit')
     }
   }
 </script>

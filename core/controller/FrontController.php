@@ -36,7 +36,6 @@ class FrontController {
     $this->_router = !empty($splits[0]) ? ucfirst($splits[0]).'Router' : 'IndexRouter';
     //Какой action использовать?
     $this->_action = 'registerRouter';
-
   }
 
   /**

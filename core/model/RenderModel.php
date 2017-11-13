@@ -17,6 +17,13 @@ class RenderModel {
     return ob_get_clean();
   }
 
+  public function renderAndOverwritePaths($file) {
+    $fileTmp = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/' . $file ,  FILE_USE_INCLUDE_PATH);
+    $file = str_replace('static', 'link/client/dist/static',  $fileTmp);
+
+    return $file;
+  }
+
   function readFile($file){
     return file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/' . $file ,  FILE_USE_INCLUDE_PATH);
   }

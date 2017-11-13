@@ -20,6 +20,9 @@ class LoadRouter extends Router {
    */
   function registerRouter() {
 
+    /**
+     * крос доменный заголовки
+     */
     $this->app->add(function ($req, $res, $next) {
       $response = $next($req, $res);
       return $response
@@ -28,16 +31,39 @@ class LoadRouter extends Router {
         ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     });
 
+    /**
+     * отдать но логистик
+     */
     $this->app->get('/load/getNoLogistic', function ($request, $response, $args) {
       $logisticController = new LogisticController();
       return $response->withJSON($logisticController->getNoLogistic());
     });
 
+    /**
+     * отдать логистик
+     */
+    $this->app->get('/load/getLogistic', function ($request, $response, $args) {
+      $logisticController = new LogisticController();
+      return $response->withJSON($logisticController->getLogistic());
+    });
+
+    /**
+     * логика регистрации
+     */
     $this->app->get('/load/{name}', function ($request, $response, $args) {
       $logisticController = new LogisticController();
 
       return $response->write(var_dump($logisticController->register($args['name'])));
     })->setName("ticket-detail");
+
+    /**
+     * получение новой логистик записи
+     */
+    $this->app->post('/load/setLogistic', function ($request, $response, $args) {
+      $logisticController = new LogisticController();
+
+      return $response->write($logisticController->setLogistic($_POST));
+    });
 
 
   }

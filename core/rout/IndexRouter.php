@@ -17,7 +17,7 @@ class IndexRouter extends Router {
 
     $this->app->get('/', function ($request, $response, $args) {
       $renderModel = new RenderModel();
-      $response->getBody()->write( $renderModel->render('link/client/dist/index.html') );
+      $response->getBody()->write( $renderModel->renderAndOverwritePaths('link/client/dist/index.html') );
       return $response;
     });
 

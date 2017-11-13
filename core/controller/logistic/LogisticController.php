@@ -54,4 +54,29 @@ class LogisticController {
     return $answer;
   }
 
+  function getLogistic() {
+    $answer = [];
+    foreach ($this->bd->logistic() as $id => $row){
+      $answer[] = $row;
+    }
+    return $answer;
+  }
+
+  /**
+   * перенос с нологистик в логистик
+   * @param $arr
+   * @return string
+   */
+  function setLogistic($arr){
+    $key = $arr['keyFile'];
+    if (!$this->isLogistic($key)) {
+      $this->bd->logistic()->insert($arr);
+    }
+    if ($this->isLogistic($key)) {
+      $row =  $this->bd->no_logistics()->where("keyFile", $key);
+      return $row->delete();
+
+    }
+  }
+
 }

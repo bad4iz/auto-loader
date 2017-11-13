@@ -9,6 +9,7 @@
 namespace Core\rout\customer;
 
 
+use Core\controller\logistic\LogisticController;
 use Core\rout\Router;
 
 class TestRouter extends Router {
@@ -19,7 +20,11 @@ class TestRouter extends Router {
    */
   function registerRouter() {
     $this->app->get('/test/{name}', function ($request, $response, $args) {
-      return $response->write("Hello " . $args['name']);
+      $logisticController = new LogisticController();
+      if(!$logisticController->setLogistic(['keyFile'=>222])){
+        $aa=222;
+      };
+      return $response->write("Hello " . $args['name']. $aa);
     })->setName("ticket-detail");
   }
 }
