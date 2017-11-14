@@ -7,7 +7,8 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     noLogisticsTable: [],
-    logisticsTable: []
+    logisticsTable: [],
+    base: []
   },
   getters: {
     noLogistics (state) {
@@ -18,6 +19,9 @@ const store = new Vuex.Store({
     },
     noLogisticsCount (state) {
       return state.noLogisticsTable.length
+    },
+    getBase (state) {
+      return state.base
     }
   },
   mutations: {
@@ -27,7 +31,7 @@ const store = new Vuex.Store({
   },
   actions: {
     noLogisticsInit ({commit}) {
-      const url = 'http://auto-loader.dev/load/getNoLogistic'
+      const url = 'http://auto-loader.dev:8082/load/getNoLogistic'
       fetch(url)
         .then(function (response) {
           return response.json()
@@ -41,7 +45,7 @@ const store = new Vuex.Store({
         })
     },
     logisticsInit ({commit}) {
-      const url = 'http://auto-loader.dev/load/getLogistic'
+      const url = 'http://auto-loader.dev:8082/load/getLogistic'
       fetch(url)
         .then(function (response) {
           return response.json()
@@ -55,7 +59,7 @@ const store = new Vuex.Store({
         })
     },
     setLogistic ({commit}, data) {
-      const url = 'http://auto-loader.dev/load/setLogistic'
+      const url = 'http://auto-loader.dev:8082/load/setLogistic'
       const that = this
       fetch(url, {
         method: 'POST',
@@ -64,6 +68,31 @@ const store = new Vuex.Store({
       .then(function () {
         that.dispatch('noLogisticsInit')
         that.dispatch('logisticsInit')
+      })
+    },
+    setDataBase ({commit}, data) {
+      const url = 'http://auto-loader.dev:8082/load/setDataBase'
+      fetch(url, {
+        method: 'POST',
+        body: data
+      })
+      .then(function (response) {
+        return response.json()
+      })
+      .then(function (response) {
+        console.log(response)
+        commit('set', {type: 'base', item: response})
+      })
+    },
+    getDataBase ({commit}) {
+      const url = 'http://auto-loader.dev:8082/load/getDataBase'
+      fetch(url)
+      .then(function (response) {
+        return response.json()
+      })
+      .then(function (response) {
+        console.log(response)
+        commit('set', {type: 'base', item: response})
       })
     }
   }

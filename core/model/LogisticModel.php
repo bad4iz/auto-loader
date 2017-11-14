@@ -9,6 +9,8 @@
 namespace Core\model;
 
 
+use PDO;
+
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/core/lib/notorm-master/NotORM.php");
 
 class LogisticModel {
@@ -43,4 +45,26 @@ class LogisticModel {
   function getNotOrm (){
     return new \NotORM($this->pdo);
   }
+
+  function query($sql) {
+    $param = $_ENV['env'];
+
+    $dns = $param['dnsPDOCore'];
+    $user = $param['userPDOCore'];
+    $pass = $param['passPDOCore'];
+    $db = new PDO($dns, $user, $pass);
+    return $db->query($sql, PDO::FETCH_ASSOC)->fetchAll();
+  }
+
+  function exec($sql) {
+    $param = $_ENV['env'];
+
+    $dns = $param['dnsPDOCore'];
+    $user = $param['userPDOCore'];
+    $pass = $param['passPDOCore'];
+    $db = new PDO($dns, $user, $pass);
+    return $db->exec($sql);
+  }
+
+
 }

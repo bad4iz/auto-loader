@@ -44,11 +44,14 @@
             </v-flex>
             
             <v-flex xs6>
-              <v-text-field
+              <v-select
                 prepend-icon="dns"
-                placeholder="База данных"
+                v-bind:items="baseTable()"
                 v-model="db"
-              ></v-text-field>
+                label="База данных"
+                single-line
+                bottom
+              ></v-select>
             </v-flex>
             
             <v-flex xs6>
@@ -123,6 +126,9 @@
   
         this.$store.dispatch('setLogistic', data)
         this.cancel()
+      },
+      baseTable () {
+        return this.$store.getters.getBase.map(item => item.name)
       }
     }
   }

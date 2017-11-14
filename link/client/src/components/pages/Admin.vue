@@ -1,14 +1,14 @@
 <template>
   <div>
-    <h2>Admin</h2>
-    {{ name }}
-    <button v-on:click="onClick"> нажми </button>
+    <h2>Админка</h2>
+    <create-db></create-db>
   </div>
 </template>
 
 
 
 <script>
+import createDb from '../components/createDb'
 export default {
   name: 'AdminPage',
   data () {
@@ -20,6 +20,9 @@ export default {
     onClick: function () {
       console.log('click')
     }
+  },
+  components: {
+    createDb
   }
 }
 </script>

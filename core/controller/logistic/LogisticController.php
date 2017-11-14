@@ -32,7 +32,7 @@ class LogisticController {
    * @return bool
    */
   private function isLogistic($key) {
-    $answer = $this->bd->logistic()->where("keyFile", $key);
+    $answer = $this->bd->logistics()->where("keyFile", $key);
     return !!count($answer);
   }
 
@@ -56,7 +56,7 @@ class LogisticController {
 
   function getLogistic() {
     $answer = [];
-    foreach ($this->bd->logistic() as $id => $row){
+    foreach ($this->bd->logistics() as $id => $row){
       $answer[] = $row;
     }
     return $answer;
@@ -66,16 +66,44 @@ class LogisticController {
    * перенос с нологистик в логистик
    * @param $arr
    * @return string
+   *
+   * USE [test]
+   *
+   *   CREATE TABLE [dbo].[logistics](
+   *   [keyFile] [varchar](50) NULL,
+   *   [db] [varchar](50) NULL,
+   *   [tableBd] [varchar](50) NULL,
+   *   [struct] [varchar](50) NULL,
+   *   [diskription] [varchar](50) NULL,
+   *   [statusbd] [varchar](50) NULL
+   *   ) ON [PRIMARY]
+   *
    */
   function setLogistic($arr){
+    $logisticModel = LogisticModel::getInstance();
+
     $key = $arr['keyFile'];
-    if (!$this->isLogistic($key)) {
-      $this->bd->logistic()->insert($arr);
+
+    $fields = [];
+    $fields = explode(";", $arr['struct']);
+
+    $sql = "USE [". $arr['db'] ."]
+            CREATE TABLE [dbo].[". $arr['tableBd'] ."](";
+
+    foreach ($fields as $value){
+      $sql .= "[" . $value . "] [varchar](50) NULL,";
     }
+    $sql = trim($sql, ',');
+    $sql .= ") ON [PRIMARY]";
+    $logisticModel->exec($sql);
+
+    if (!$this->isLogistic($key)) {
+      $this->bd->logistics()->insert($arr);
+    }
+    echo var_dump($arr);
     if ($this->isLogistic($key)) {
       $row =  $this->bd->no_logistics()->where("keyFile", $key);
       return $row->delete();
-
     }
   }
 

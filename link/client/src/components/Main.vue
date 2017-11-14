@@ -83,10 +83,9 @@
       <v-content>
           <v-container fill-height>
             
-          <v-layout justify-center align-center>
+         <v-layout justify-center align-center>
          <router-view/>
-           
-          </v-layout>
+            </v-layout>
         </v-container>
       
       </v-content>
