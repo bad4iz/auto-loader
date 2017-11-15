@@ -130,6 +130,10 @@
       baseTable () {
         return this.$store.getters.getBase.map(item => item.name)
       }
+    },
+    created: function () {
+      this.$store.dispatch('noLogisticsInit')
+      this.$store.dispatch('getDataBase')
     }
   }
 </script>
