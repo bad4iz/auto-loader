@@ -31,7 +31,7 @@ const store = new Vuex.Store({
   },
   actions: {
     noLogisticsInit ({commit}) {
-      const url = 'http://auto-loader.dev:8082/load/getNoLogistic'
+      const url = 'load/getNoLogistic'
       fetch(url)
         .then(function (response) {
           return response.json()
@@ -45,7 +45,7 @@ const store = new Vuex.Store({
         })
     },
     logisticsInit ({commit}) {
-      const url = 'http://auto-loader.dev:8082/load/getLogistic'
+      const url = 'load/getLogistic'
       fetch(url)
         .then(function (response) {
           return response.json()
@@ -59,7 +59,7 @@ const store = new Vuex.Store({
         })
     },
     setLogistic ({commit}, data) {
-      const url = 'http://auto-loader.dev:8082/load/setLogistic'
+      const url = 'load/setLogistic'
       const that = this
       fetch(url, {
         method: 'POST',
@@ -71,7 +71,7 @@ const store = new Vuex.Store({
       })
     },
     setDataBase ({commit}, data) {
-      const url = 'http://auto-loader.dev:8082/load/setDataBase'
+      const url = 'load/setDataBase'
       fetch(url, {
         method: 'POST',
         body: data
@@ -85,7 +85,7 @@ const store = new Vuex.Store({
       })
     },
     getDataBase ({commit}) {
-      const url = 'http://auto-loader.dev:8082/load/getDataBase'
+      const url = 'load/getDataBase'
       fetch(url)
       .then(function (response) {
         return response.json()
