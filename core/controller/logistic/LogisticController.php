@@ -23,7 +23,7 @@ class LogisticController {
    * запись в нологистик
    */
   private function setNoLogistic($key) {
-    $this->bd->no_logistics()->insert(['keyFile' => $key, 'date' => time()]);
+    return $this->bd->no_logistics()->insert(['keyFile' => $key, 'date' => time()]);
   }
 
   /**
@@ -42,7 +42,7 @@ class LogisticController {
    */
   function register($key) {
     if (!$this->isLogistic($key)) {
-      $this->setNoLogistic($key);
+      return $this->setNoLogistic($key);
     }
   }
 
@@ -80,11 +80,16 @@ class LogisticController {
    *
    */
   function setLogistic($arr){
+    if($this->isTable($arr['db'],$arr['tableBd'])) {
+      return false;
+    }
     $logisticModel = LogisticModel::getInstance();
+
 
     $key = $arr['keyFile'];
 
     $fields = [];
+    $struct = trim(';', $arr['struct']);
     $fields = explode(";", $arr['struct']);
 
     $sql = "USE [". $arr['db'] ."]
@@ -97,14 +102,20 @@ class LogisticController {
     $sql .= ") ON [PRIMARY]";
     $logisticModel->exec($sql);
 
-    if (!$this->isLogistic($key)) {
-      $this->bd->logistics()->insert($arr);
-    }
-    echo var_dump($arr);
-    if ($this->isLogistic($key)) {
-      $row =  $this->bd->no_logistics()->where("keyFile", $key);
-      return $row->delete();
+    if($this->isTable($arr['db'],$arr['tableBd'])){
+      if (!$this->isLogistic($key)) {
+        $this->bd->logistics()->insert($arr);
+      }
+      if ($this->isLogistic($key)) {
+        $row =  $this->bd->no_logistics()->where("keyFile", $key);
+        return $row->delete();
+      }
     }
   }
 
+   private function isTable($dateBase, $table){
+    $sql = " SELECT OBJECT_ID(N'".$dateBase ."..". $table ."') AS 'table';";
+    $logisticModel = LogisticModel::getInstance();
+    return  $logisticModel->queryOne($sql)['table'];
+  }
 }

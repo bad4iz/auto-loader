@@ -4,6 +4,8 @@ import timeConverter from '../libs/timeConverter'
 
 Vue.use(Vuex)
 
+const path = 'http://auto-loader.dev:8082/'
+
 const store = new Vuex.Store({
   state: {
     noLogisticsTable: [],
@@ -31,7 +33,7 @@ const store = new Vuex.Store({
   },
   actions: {
     noLogisticsInit ({commit}) {
-      const url = 'load/getNoLogistic'
+      const url = path + 'load/getNoLogistic'
       fetch(url)
         .then(function (response) {
           return response.json()
@@ -45,7 +47,7 @@ const store = new Vuex.Store({
         })
     },
     logisticsInit ({commit}) {
-      const url = 'load/getLogistic'
+      const url = path + 'load/getLogistic'
       fetch(url)
         .then(function (response) {
           return response.json()
@@ -59,7 +61,7 @@ const store = new Vuex.Store({
         })
     },
     setLogistic ({commit}, data) {
-      const url = 'load/setLogistic'
+      const url = path + 'load/setLogistic'
       const that = this
       fetch(url, {
         method: 'POST',
@@ -71,7 +73,7 @@ const store = new Vuex.Store({
       })
     },
     setDataBase ({commit}, data) {
-      const url = 'load/setDataBase'
+      const url = path + 'load/setDataBase'
       fetch(url, {
         method: 'POST',
         body: data
@@ -85,7 +87,7 @@ const store = new Vuex.Store({
       })
     },
     getDataBase ({commit}) {
-      const url = 'load/getDataBase'
+      const url = path + 'load/getDataBase'
       fetch(url)
       .then(function (response) {
         return response.json()

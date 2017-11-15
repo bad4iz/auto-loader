@@ -55,16 +55,22 @@ class LogisticModel {
     $db = new PDO($dns, $user, $pass);
     return $db->query($sql, PDO::FETCH_ASSOC)->fetchAll();
   }
-
-  function exec($sql) {
+  function queryOne($sql) {
     $param = $_ENV['env'];
 
     $dns = $param['dnsPDOCore'];
     $user = $param['userPDOCore'];
     $pass = $param['passPDOCore'];
     $db = new PDO($dns, $user, $pass);
-    return $db->exec($sql);
+    return $db->query($sql, PDO::FETCH_ASSOC)->fetch();
   }
 
-
+  function exec($sql) {
+    $param = $_ENV['env'];
+    $dns = $param['dnsPDOCore'];
+    $user = $param['userPDOCore'];
+    $pass = $param['passPDOCore'];
+    $db = new PDO($dns, $user, $pass);
+    return $db->exec($sql);
+  }
 }
