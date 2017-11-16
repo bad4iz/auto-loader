@@ -90,7 +90,7 @@ class LogisticController {
 
     $fields = [];
     $struct = trim(';', $arr['struct']);
-    $fields = explode(";", $arr['struct']);
+    $fields = explode(";", $struct);
 
     $sql = "USE [". $arr['db'] ."]
             CREATE TABLE [dbo].[". $arr['tableBd'] ."](";
