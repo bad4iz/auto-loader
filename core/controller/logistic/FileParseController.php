@@ -15,21 +15,9 @@ use Slim\Http\UploadedFile;
 
 class FileParseController {
   /**
-   * @param $file
+   * @param $filePath
    */
-  function parseFile($file) {
-
-  }
-
-  /**
-   * @param $key
-   * @param $file
-   */
-  function logisticFile($key, $upFile) {
-    $fileWriteBaseModel = new FileWriteBase($key);
-    $rowKey = explode(";", trim($fileWriteBaseModel->struct, ';'));
-
-    $filePath = $this->moveUploadedFile($key, $upFile);
+  private function parseFile($filePath, $rowKey) {
 
     if(!$filePath){
       return false;
@@ -45,15 +33,26 @@ class FileParseController {
       }
       $query[] = $row;
     }
-    $answer = $fileWriteBaseModel->database->insert_multi($query);
+    return $query;
+  }
+
+  /**
+   * @param $key
+   * @param $file
+   */
+  function logisticFile($key, $upFile) {
+    $fileWriteBaseModel = new FileWriteBase($key);
+    $rowKey = explode(";", trim($fileWriteBaseModel->struct, ';'));
+
+    $filePath = $this->moveUploadedFile($key, $upFile);
+
+    $answer = $fileWriteBaseModel->database->insert_multi($this->parseFile($filePath, $rowKey));
+
     if ($answer) {
       unlink($filePath);
       return $answer;
-
     }
-
     return $filePath;
-
   }
 
   /**
