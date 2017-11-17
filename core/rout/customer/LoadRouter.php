@@ -83,19 +83,20 @@ class LoadRouter extends Router {
 
 
     /**
-     * логика регистрации
+     * логика регистрации и обработки файла
      */
     $this->app->post('/load/{name}', function ($request, $response, $args) {
       $logisticController = new LogisticController();
       if( $logisticController->register($args['name'])){ // если зарегистрирован ключ
         $fileParseModel = new FileParseController();
 
-        $uploadedFiles = $request->getUploadedFiles();
-        $uploadedFile = $uploadedFiles['file'];
-        if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
-          return $response->withJSON($fileParseModel->logisticFile($args['name'], $uploadedFile));
+        foreach ($request->getUploadedFiles() as $uploadedFile){
+          if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
+            return $response->withJSON($fileParseModel->logisticFile($args['name'], $uploadedFile));
+          }
         }
       }
+      return $response->withJSON(000);
     });
 
     //////////////// delete ////////////////////////////////////

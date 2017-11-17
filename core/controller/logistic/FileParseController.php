@@ -68,8 +68,10 @@ class FileParseController {
     $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
     $basename = bin2hex(random_bytes(8)); // see http://php.net/manual/en/function.random-bytes.php
     $filename = $uploadedFile->getClientFilename();
-    $pathFile = '.' . DIRECTORY_SEPARATOR . 'DataFile'. DIRECTORY_SEPARATOR .$keyFile . DIRECTORY_SEPARATOR . $filename;
 
+    $pathDir = 'DataFile/'.$keyFile ;
+    mkdir($pathDir, 0777, true);
+    $pathFile = $pathDir .'/' . $filename;
     $uploadedFile->moveTo($pathFile);
 //    $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
     return $pathFile;
