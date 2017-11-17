@@ -9,7 +9,10 @@
 namespace Core\rout\customer;
 
 
+use Core\controller\logistic\FileParseController;
 use Core\controller\logistic\LogisticController;
+use Core\model\FileParse;
+use Core\model\FileWriteBase;
 use Core\model\LogisticModel;
 use Core\rout\Router;
 
@@ -32,16 +35,6 @@ class LoadRouter extends Router {
         ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     });
 
-    /**
-     * test
-     */
-    $this->app->get('/load/test', function ($request, $response, $args) {
-      $logisticModel = LogisticModel::getInstance();
-      $logisticController = new LogisticController();
-//      return $response->withJSON($logisticController->setLogistic($_POST));
-//      return $response->write(var_dump($logisticController->isTable($_POST['db'], $_POST['tableBd'])));
-      return $response->write(d($logisticController->isTable('test_dRivg', 'testTable')));
-    });
     /**
      * отдать но логистик
      */
@@ -66,24 +59,14 @@ class LoadRouter extends Router {
 
       return $response->withJSON($logisticModel->query('SELECT name, crdate FROM sysdatabases WHERE  CHARINDEX(\'_Rivg\', name) > 0'));
     });
-    /**
-     * логика регистрации
-     */
-    $this->app->get('/load/{name}', function ($request, $response, $args) {
-      $logisticController = new LogisticController();
 
-      return $response->withJSON($logisticController->register($args['name']));
-    })->setName("ticket-detail");
 
     /**
      * получение новой логистик записи
      */
     $this->app->post('/load/setLogistic', function ($request, $response, $args) {
       $logisticController = new LogisticController();
-      $logisticModel = LogisticModel::getInstance();
       return $response->withJSON($logisticController->setLogistic($_POST));
-//      return $response->write(var_dump($logisticController->isTable($_POST['db'], $_POST['tableBd'])));
-      return $response->withJSON($logisticController->isTable($_POST['db'], $_POST['tableBd']));
     });
 
     /**
@@ -104,35 +87,42 @@ class LoadRouter extends Router {
      */
     $this->app->post('/load/{name}', function ($request, $response, $args) {
       $logisticController = new LogisticController();
-      $logisticController->register($args['name']);
+      if( $logisticController->register($args['name'])){ // если зарегистрирован ключ
+        $fileParseModel = new FileParseController();
 
-      $uploadedFiles = $request->getUploadedFiles();
-      $uploadedFile = $uploadedFiles['file'];
-      if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
-        $filename = moveUploadedFile(dirname(__DIR__), $uploadedFile);
-        return $response->withJSON('uploaded ' . $filename . '<br/>');
+        $uploadedFiles = $request->getUploadedFiles();
+        $uploadedFile = $uploadedFiles['file'];
+        if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
+          return $response->withJSON($fileParseModel->logisticFile($args['name'], $uploadedFile));
+        }
       }
-      return $response->withJSON($uploadedFiles);
+    });
+
+    //////////////// delete ////////////////////////////////////
+
+    /**
+     * test
+     */
+    $this->app->get('/load/test', function ($request, $response, $args) {
+      $fileParseModel = new FileParse();
+//      $fileWriteBaseModel = new FileWriteBase('./testKey');
+      return $response->withJSON($fileParseModel->logisticFile('testKey', './test.txt' ));
+      return $response->withJSON($fileWriteBaseModel->database->insert(['date'=>'000']));
+//      return $response->write(var_dump($logisticController->isTable($_POST['db'], $_POST['tableBd'])));
+//      return $response->write(d($logisticController->isTable('test_dRivg', 'testTable')));
     });
 
     /**
-     * Moves the uploaded file to the upload directory and assigns it a unique name
-     * to avoid overwriting an existing uploaded file.
-     *
-     * @param string $directory directory to which the file is moved
-     * @param UploadedFile $uploaded file uploaded file to move
-     * @return string filename of moved file
+     * логика регистрации
      */
-    function moveUploadedFile($directory,  $uploadedFile)
-    {
-      $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
-      $basename = bin2hex(random_bytes(8)); // see http://php.net/manual/en/function.random-bytes.php
-      $filename = sprintf('%s.%0.8s', $basename, $extension);
+    $this->app->get('/load/{name}', function ($request, $response, $args) {
+      $logisticController = new LogisticController();
 
-      $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
+      return $response->withJSON($logisticController->register($args['name']));
+    })->setName("ticket-detail");
 
-      return $filename;
-    }
+
+    //////////////// delete ////////////////////////////////////
 
 
   }

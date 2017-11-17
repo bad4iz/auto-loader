@@ -4,8 +4,7 @@ import timeConverter from '../libs/timeConverter'
 
 Vue.use(Vuex)
 
-// const path = 'http://auto-loader.dev:8082/'
-const path = ''
+const path = 'http://auto-loader.dev:8082/'
 
 const store = new Vuex.Store({
   state: {

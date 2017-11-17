@@ -43,7 +43,10 @@ class LogisticController {
   function register($key) {
     if (!$this->isLogistic($key)) {
       return $this->setNoLogistic($key);
+    }else {
+      return true;
     }
+    return false;
   }
 
   function getNoLogistic() {
@@ -89,8 +92,8 @@ class LogisticController {
     $key = $arr['keyFile'];
 
     $fields = [];
-    $struct = trim(';', $arr['struct']);
-    $fields = explode(";", $struct);
+    $struct = trim( $arr['struct'], ';');
+    $fields = explode(";",  $struct);
 
     $sql = "USE [". $arr['db'] ."]
             CREATE TABLE [dbo].[". $arr['tableBd'] ."](";
@@ -118,4 +121,16 @@ class LogisticController {
     $logisticModel = LogisticModel::getInstance();
     return  $logisticModel->queryOne($sql)['table'];
   }
+
+  /**
+   * обработка файла по ключу
+   * @param $key
+   * @param $fileName
+   */
+  function setFile($key, $fileName){
+    $fileParseModel = new FileParseController();
+    $fileParseModel->logisticFile($key, $fileName );
+  }
+
+
 }
